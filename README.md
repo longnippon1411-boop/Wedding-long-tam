@@ -14,21 +14,42 @@
 }
 body{margin:0;font-family:system-ui;background:var(--bg);color:var(--text);}
 a{text-decoration:none;color:var(--accent);}
-.container{margin-left:200px;padding:20px;transition:0.3s;}
-.side-menu{position:fixed;top:0;left:0;width:180px;height:100%;background:rgba(255,255,255,0.95);padding:20px;box-shadow:2px 2px 12px rgba(0,0,0,0.1);}
+.side-menu{
+  position:fixed;top:0;left:0;width:180px;height:100%;
+  background:rgba(255,255,255,0.95);padding:20px;
+  box-shadow:2px 2px 12px rgba(0,0,0,0.1);
+}
 .side-menu ul{list-style:none;padding:0;}
 .side-menu li{margin-bottom:16px;font-weight:600;}
-.side-menu a:hover{color:var(--accent-dark);}
-section{padding:30px 0;border-bottom:1px solid #f2e5f0;}
+.side-menu button{
+  width:100%;padding:10px;background:linear-gradient(90deg,var(--accent),var(--accent-dark));
+  border:none;color:#fff;border-radius:8px;cursor:pointer;font-size:14px;text-align:left;
+}
+.side-menu button:hover{background:linear-gradient(90deg,var(--accent-dark),var(--accent));}
+
+.container{margin-left:200px;padding:20px;transition:0.3s;}
 h1,h2,h3{margin:6px 0;}
-button{padding:10px 16px;background:linear-gradient(90deg,var(--accent),var(--accent-dark));border:none;color:#fff;border-radius:8px;cursor:pointer;}
 .countdown{display:flex;gap:12px;margin-top:12px;}
 .countdown .col{background:rgba(255,255,255,0.9);padding:12px;border-radius:8px;text-align:center;min-width:70px;}
-.gallery{display:flex;flex-wrap:wrap;gap:8px;}
+.window{
+  display:none;
+  position:fixed;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  background:#fff;padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+  width:80%;max-width:500px;
+  max-height:80%;
+  overflow:auto;
+  z-index:1000;
+}
+.window h2{margin-top:0;}
+.close{position:absolute;top:10px;right:15px;cursor:pointer;font-size:20px;font-weight:bold;}
+.gallery{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
 .gallery img{width:calc(33.33% - 6px);height:120px;object-fit:cover;border-radius:8px;cursor:pointer;}
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;}
-.modal-content{background:#fff;padding:20px;border-radius:12px;max-width:90%;max-height:90%;overflow:auto;}
-.close-btn{position:absolute;top:10px;right:10px;cursor:pointer;font-weight:bold;}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;z-index:2000;}
+.modal-content{background:#fff;padding:20px;border-radius:12px;max-width:90%;max-height:90%;overflow:auto;position:relative;}
+.close-btn{position:absolute;top:10px;right:10px;cursor:pointer;font-weight:bold;font-size:20px;}
 @media(max-width:900px){.container{margin-left:0}.gallery img{width:calc(50% - 6px)}}
 </style>
 </head>
@@ -36,34 +57,36 @@ button{padding:10px 16px;background:linear-gradient(90deg,var(--accent),var(--ac
 
 <nav class="side-menu">
   <ul>
-    <li><a href="#home">Trang chủ</a></li>
-    <li><a href="#story">Câu chuyện</a></li>
-    <li><a href="#schedule">Chương trình</a></li>
-    <li><a href="#gallery">Gallery</a></li>
-    <li><a href="#rsvp">RSVP</a></li>
+    <li><button onclick="openWindow('story')">Câu chuyện</button></li>
+    <li><button onclick="openWindow('schedule')">Chương trình</button></li>
+    <li><button onclick="openWindow('galleryWindow')">Gallery</button></li>
+    <li><button onclick="openWindow('rsvpWindow')">RSVP</button></li>
   </ul>
 </nav>
 
 <div class="container">
+  <section id="home">
+    <h1>Minh Tâm & Trường Long</h1>
+    <p>Hân hoan chào đón — Lãng mạn, hồng nhẹ & sang</p>
+    <div class="countdown">
+      <div class="col"><div id="days">0</div>Ngày</div>
+      <div class="col"><div id="hours">0</div>Giờ</div>
+      <div class="col"><div id="mins">0</div>Phút</div>
+      <div class="col"><div id="secs">0</div>Giây</div>
+    </div>
+    <button id="music-toggle">Bật nhạc</button>
+  </section>
+</div>
 
-<section id="home">
-  <h1>Minh Tâm & Trường Long</h1>
-  <p>Hân hoan chào đón — Lãng mạn, hồng nhẹ & sang</p>
-  <div class="countdown">
-    <div class="col"><div id="days">0</div>Ngày</div>
-    <div class="col"><div id="hours">0</div>Giờ</div>
-    <div class="col"><div id="mins">0</div>Phút</div>
-    <div class="col"><div id="secs">0</div>Giây</div>
-  </div>
-  <button id="music-toggle">Bật nhạc</button>
-</section>
-
-<section id="story">
+<!-- Các cửa sổ -->
+<div class="window" id="story">
+  <span class="close" onclick="closeWindow('story')">&times;</span>
   <h2>Câu chuyện tình yêu</h2>
-  <p>Minh Tâm và Trường Long gặp nhau từ... [bạn điền chi tiết]</p>
-</section>
+  <p>Minh Tâm & Trường Long gặp nhau từ... [Điền chi tiết]</p>
+</div>
 
-<section id="schedule">
+<div class="window" id="schedule">
+  <span class="close" onclick="closeWindow('schedule')">&times;</span>
   <h2>Chương trình</h2>
   <ul>
     <li>10:30 — Khách đến ổn định</li>
@@ -71,32 +94,33 @@ button{padding:10px 16px;background:linear-gradient(90deg,var(--accent),var(--ac
     <li>12:00 — Tiệc chính</li>
     <li>14:30 — Kết thúc</li>
   </ul>
-</section>
+</div>
 
-<section id="gallery">
+<div class="window" id="galleryWindow">
+  <span class="close" onclick="closeWindow('galleryWindow')">&times;</span>
   <h2>Gallery</h2>
   <div class="gallery">
     <img src="cover.jpg" alt="Ảnh 1">
     <img src="a1.jpg" alt="Ảnh 2">
     <img src="a2.jpg" alt="Ảnh 3">
   </div>
-</section>
-
-<section id="rsvp">
-  <h2>RSVP</h2>
-  <iframe src="https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Đang tải…</iframe>
-</section>
-
 </div>
 
-<audio id="bgmusic" loop src="music.mp3"></audio>
+<div class="window" id="rsvpWindow">
+  <span class="close" onclick="closeWindow('rsvpWindow')">&times;</span>
+  <h2>RSVP</h2>
+  <iframe src="https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?embedded=true" width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0">Đang tải…</iframe>
+</div>
 
+<!-- Modal gallery popup -->
 <div class="modal" id="modal">
   <div class="modal-content">
     <span class="close-btn" id="closeModal">&times;</span>
     <div id="modal-body"></div>
   </div>
 </div>
+
+<audio id="bgmusic" loop src="music.mp3"></audio>
 
 <script>
 // Countdown
@@ -126,14 +150,9 @@ btn.addEventListener('click',()=>{
   else{bg.pause();btn.textContent='Bật nhạc';musicOn=false;}
 });
 
-// Smooth scroll menu
-document.querySelectorAll('.side-menu a').forEach(link=>{
-  link.addEventListener('click', e=>{
-    e.preventDefault();
-    const target=document.querySelector(link.getAttribute('href'));
-    target.scrollIntoView({behavior:'smooth'});
-  });
-});
+// Open/Close windows
+function openWindow(id){document.getElementById(id).style.display='block';}
+function closeWindow(id){document.getElementById(id).style.display='none';}
 
 // Gallery modal
 const modal=document.getElementById('modal');
